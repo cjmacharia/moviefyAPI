@@ -1,0 +1,12 @@
+{
+    "eqeqeq": true,
+    "undef": true,
+    "esversion": 6,
+    "quotmark": "single",
+    "trailingcomma": true,
+    "unused": true,
+    "varstmt": true,
+    "browser": true,
+    "mocha": true,
+    "strict": "global"
+}
