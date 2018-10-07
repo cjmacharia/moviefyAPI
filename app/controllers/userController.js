@@ -8,36 +8,40 @@ import 'babel-polyfill';
 
 class UserController { 
 	static async signUp (req, res) {
-		const hashedPass = await util.hashPassword(req, res, req.body.password);
-		const userSignUp = new User({
-			_id: new mongoose.Types.ObjectId(),
-			name: req.body.name,
-			email: req.body.email,
-			password: hashedPass
-		});
-
-		const result = util.validate(userSignUp);
-		if (result === userSignUp) { 
-			try { 
-				let data = await userSignUp.save();
-				responses.creationSuccess(res, data);
-			} catch(err) {
-				responses.registrationError(res);
-			}
-		}	
-		else {
-			responses.registrationDefaultError(res, result);
+		try { 
+			const hashedPass = await util.hashPassword(req, res, req.body.password);
+			const userSignUp = new User({
+				_id: new mongoose.Types.ObjectId(),
+				name: req.body.name,
+				email: req.body.email,
+				password: hashedPass
+			});
+				let result = await  util.validate(userSignUp)
+				result.save((err, result) => {
+					if(err) {
+						responses.registrationError(res, err)
+					} else {
+						responses.creationSuccess(res, result);
+					}
+				});
+		}	catch(err) {
+			responses.UnauthorisedError(res, err);
 		}
-	}
-
+	}	
+	
 	static async Userlogin (req, res) {
 		try { 
+			let data = {
+				email: req.body.email,
+				password: req.body.password,
+			}
+			
+			await util.validate(data)
 			let  user = await User.findOne({email: req.body.email});
 			if(user === null) {
 				responses.userNotError(res);
-			} else { 
-				try { 
-					const match = await bcrypt.compare(req.body.password, user.password);
+			} else {
+					const match = await bcrypt.compare(data.password, user.password);
 					if (match) {
 						const token = jwt.sign({ email: user.email,
 							userId: user.id
@@ -48,13 +52,10 @@ class UserController {
 					} else {
 						responses.AuthenticationError(res)
 					}
-				} catch(err) {
-					responses.AuthenticationError(res);
 				}
-			}
 		} catch(err) {
-			responses.serverError(res, err);
-		}
+				responses.UnauthorisedError(res, err);
+			}		
 	}
 }
 

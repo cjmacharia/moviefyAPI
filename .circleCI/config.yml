@@ -37,7 +37,7 @@ jobs:
       - *save_cache
       - run:
           name: run tests
-          command: npm test
+          command: npm run coverage
       - run:
           name: submit coverage results
           command: npm coveralls

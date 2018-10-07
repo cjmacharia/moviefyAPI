@@ -13,6 +13,7 @@
         "sourceType": "module"
     },
     "rules": {
+        "parser": "babel-eslint",
         "indent": [
             2,
             "tab"

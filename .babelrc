@@ -3,5 +3,12 @@
         "es2015",
         "stage-3"
     ],
-    "plugins": []
+    "plugins": [],
+    "env": {
+        "test": {
+            "plugins": [
+                "istanbul"
+            ]
+        }
+    }
 }

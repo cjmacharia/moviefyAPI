@@ -4,15 +4,27 @@ export const creationSuccess = (response, data) => {
 		data: data});
 };
 
-export const registrationError = (res) => {
-	res.status(409).json({
-		message: 'The email is already taken'
+export const registrationError = (res, err) => {
+	res.status(403).json({
+		error: err.message
 	});
 };
 
-export const registrationDefaultError = (res, result) => {
+export const BarRequestError = (res) => {
+	res.status(400).json({
+		error: 'something went wrong'
+	});
+};
+
+export const mongoError = (res, err) => {
 	res.status(401).json({
-		error: result
+		error: err.message
+	});
+};
+
+export const UnauthorisedError = (res, err) => {
+	res.status(401).json({
+		error: err.message
 	});
 };
 
@@ -43,7 +55,7 @@ export const AuthenticationError = (res) => {
 
 export const serverError = (res, err) => {
 	res.status(500).json({
-		message: err
+		message: err.message
 	});	
 };
 
