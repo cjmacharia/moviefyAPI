@@ -35,7 +35,6 @@ class UserController {
 				email: req.body.email,
 				password: req.body.password,
 			}
-			
 			await util.validate(data)
 			let  user = await User.findOne({email: req.body.email});
 			if(user === null) {
