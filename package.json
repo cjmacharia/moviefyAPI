@@ -7,7 +7,7 @@
 		"test": "mocha --require babel-core/register ./tests/**/*.js",
 		"start": "nodemon --exec babel-node app.js",
 		"coverage": "babel-node ./node_modules/.bin/babel-istanbul cover _mocha -- ./tests/**/*.js --compilers js:babel-register",
-		"coveralls": "npm run coverage"
+		"coveralls": "npm run coverage && cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
 	},
 	"repository": {
 		"type": "git",
