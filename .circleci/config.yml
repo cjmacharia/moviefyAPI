@@ -12,7 +12,7 @@ install_dependencies: &install_dependencies
     command: npm install
 save_cache: &save_cache 
   save_cache:
-    key: dependency-cache-{{ checksum "package.json" }}
+    key: dependency-cache-{{ checksum "package.json"}}
     paths:
       - ./node_modules 
 
@@ -26,10 +26,10 @@ jobs:
       - *install_dependencies
       - *save_cache 
       - run: 
-          name: start application
+          name: install dependancies
           command: npm install 
   tests: 
-     <<: *default
+    <<: *default
     steps:
       - checkout
       - *restore_cache
@@ -37,19 +37,19 @@ jobs:
       - *save_cache
       - run:
           name: run tests
-          command: npm test
+          command: npm run coverage
       - run:
-          name: submit coverage results
-          command: npm coveralls
+          name: submit coverage reports
+          command: npm run coveralls
 
 workflows:
-version: 2
+  version: 2
   build_test_deploy:
     jobs:
       - build
-      - tests:
-          requires:
-            - build          
+      - tests
+          # requires:
+          #   - build          
 
 
 
