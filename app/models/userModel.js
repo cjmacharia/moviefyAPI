@@ -13,7 +13,7 @@ const userSchema = new Schema({
 	email: {
 		type:String,
 		required:[true, 'please provide an email before proceeding'],
-		unique: [true, 'The email must be unique '],
+		unique: [true, 'The email must be unique'],
 		trim: true,
 	},
 	password: {

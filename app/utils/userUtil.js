@@ -4,14 +4,20 @@ import  bcrypt from 'bcrypt';
 export const validate  = (data) => {
 	const email = data.email;
 	const name = data.name;
-	const validEmail = validator.isEmail(email);
 	return new Promise((resolve, reject) => {
-		if (!validEmail) {
-			return reject ('this must be a valid email');
+		if(!email){
+			return reject ('The email field is required');
 		}
-		else if (name) {
-			const re = name.match(/^[A-Za-z\s]*$/);
-			if (!re) {
+		if (email) {
+			const validEmail = validator.isEmail(email);
+			if(!validEmail){
+				return reject ('this must be a valid email');
+			}
+		}
+		if (name) {
+			const re = /^([a-z]+\s)*[a-z]+$/;
+			const validName = name.match(re);
+			if (!validName) {
 				return reject ('the name can not contain a number');
 			}
 		}
@@ -21,17 +27,19 @@ export const validate  = (data) => {
 
 export const  hashPassword = (req, res, data) => {
 	try {
-		const password = data;
-		const validPassword = password.trim();
 		return new Promise ((resolve, reject) => {
-			if (!validPassword){
-				return reject ('The password field cannot be empty');
+			if(!data){
+				return reject ('All fields are required');
 			} else {
-				const hashedPassword = bcrypt.hash(data, 10);
-				return resolve(hashedPassword);
+				const validPassword = data.trim();
+				if (!validPassword){
+					return reject ('The password field cannot be empty');
+				}else {
+					const hashedPassword = bcrypt.hash(data, 10);
+					return resolve(hashedPassword);
+				}
 			}
 		});
-	
 	}catch (err) {
 		return err;
 	}

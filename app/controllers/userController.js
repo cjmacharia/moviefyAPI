@@ -16,16 +16,16 @@ class UserController {
 				email: req.body.email,
 				password: hashedPass
 			});
-				let result = await  util.validate(userSignUp)
+				let result = await  util.validate(userSignUp);
 				result.save((err, result) => {
 					if(err) {
-						responses.registrationError(res, err)
+						err.name === 'ValidationError' ? responses.validationError(res, err) : responses.UserDetailsError(res, err);			
 					} else {
 						responses.creationSuccess(res, result);
 					}
 				});
 		}	catch(err) {
-			responses.UnauthorisedError(res, err);
+			responses.UserDetailsError(res, err);
 		}
 	}	
 	
@@ -49,11 +49,11 @@ class UserController {
 						});
 						responses.loginSuccess(res, token);
 					} else {
-						responses.AuthenticationError(res)
+						responses.AuthenticationError(res);
 					}
 				}
 		} catch(err) {
-				responses.UnauthorisedError(res, err);
+				responses.UserDetailsError(res, err);
 			}		
 	}
 }

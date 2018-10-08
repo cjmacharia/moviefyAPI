@@ -1,5 +1,6 @@
 process.env.NODE_ENV='test';
 process.env.JWT_KEY='SECRTET';
+
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import * as util from '../../app/utils/userUtil';
@@ -68,7 +69,7 @@ describe ('test user sign up functionalities', () => {
 			.end((err, res) => {
 				res.should.have.status(403);
 				res.body.should.be.a('object');
-				res.body.error.should.be.eql('this must be a valid email');
+				res.body.error.should.be.eql('The email field is required');
 				done();			
 			});
 	});
@@ -90,27 +91,12 @@ describe ('test user sign up functionalities', () => {
 			});
 	});
 
-	it ('should fail to create a new user if the password is empty', (done) => {
-		const user = new Model({
-			name: 'cjmash',
-			email: 'mashgmail.com',
-			password: ' '
-		});
-		chai.request(server)
-			.post('/signup')
-			.send(user)
-			.end((err, res) => {
-				res.should.have.status(401);
-				res.body.should.be.a('object');
-				res.body.error.should.be.eql('The password field cannot be empty');
-				done();			
-			});
-	});
 
-	it ('should fail to create a new user if the user name field is empty', (done) => {
+
+	it ('should fail to create a new user if the name has numbers', (done) => {
 		const user = new Model({
-			name: '',
-			email: 'cjmash@email.com',
+			name: 'cjmash 4844',
+			email: 'mash@gmail.com',
 			password: 'cjmash'
 		});
 		chai.request(server)
@@ -119,7 +105,71 @@ describe ('test user sign up functionalities', () => {
 			.end((err, res) => {
 				res.should.have.status(403);
 				res.body.should.be.a('object');
-				res.body.error.errors.should.be.a('object');
+				res.body.error.should.be.eql('the name can not contain a number');
+				done();			
+			});
+	});
+
+	it ('should fail to create a new user if the password is empty', (done) => {
+		const user = new Model({
+			name: 'cjmash',
+			email: 'mash@gmail.com',
+			password: ' '
+		});
+		chai.request(server)
+			.post('/signup')
+			.send(user)
+
+			.end((err, res) => {
+				res.should.have.status(403);
+				res.body.should.be.a('object');
+				res.body.error.should.be.eql('All fields are required');
+				done();			
+			});
+	});
+
+	it ('should fail to create a new user if the user name field is empty', (done) => {
+		const user = new Model({
+			name: '',
+			email: 'testuser@email.com',
+			password: 'cjmash'
+		});
+		chai.request(server)
+			.post('/signup')
+			.send(user)
+			.end((err, res) => {
+				res.should.have.status(403);
+				done();			
+			});
+	});
+
+
+	it ('should fail to create a new user if the  name field is not provided', (done) => {
+		const user = new Model({
+			email: 'testuser@email.com',
+			password: 'cjmash'
+		});
+		chai.request(server)
+			.post('/signup')
+			.send(user)
+			.end((err, res) => {
+				res.should.have.status(403);
+				done();			
+			});
+	});
+
+	it ('should fail to create a new user if the  email field is not provided', (done) => {
+		const user = new Model({
+			name: 'test user',
+			password: 'cjmash'
+		});
+		chai.request(server)
+			.post('/signup')
+			.send(user)
+			.end((err, res) => {
+				res.should.have.status(403);
+				res.body.should.be.a('object');
+				res.body.error.should.be.eql('The email field is required');
 				done();			
 			});
 	});
@@ -179,9 +229,9 @@ describe ('test user sign up functionalities', () => {
 			.post('/login')
 			.send(user)
 			.end((err, res) => {
-				res.should.have.status(401);
+				res.should.have.status(403);
 				res.body.should.be.a('object');
-				res.body.message.should.be.eql('Authentication failed');
+				res.body.error.should.be.eql('The email field is required');
 				done();			
 			});
 	});
@@ -198,9 +248,11 @@ describe ('test user sign up functionalities', () => {
 			.end((err, res) => {
 				res.should.have.status(401);
 				res.body.should.be.a('object');
-				res.body.message.should.be.eql('Authentication failed');
+				res.body.error.should.be.eql('Authentication failed');
 				done();			
 			});
 	});
+
+
 
 });
