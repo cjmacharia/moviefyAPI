@@ -26,10 +26,10 @@ jobs:
       - *install_dependencies
       - *save_cache 
       - run: 
-          name: start application
+          name: install dependancies
           command: npm install 
   tests: 
-     <<: *default
+    <<: *default
     steps:
       - checkout
       - *restore_cache
@@ -39,17 +39,17 @@ jobs:
           name: run tests
           command: npm run coverage
       - run:
-          name: submit coverage results
+          name: submit coverage reports
           command: npm coveralls
 
 workflows:
-version: 2
+  version: 2
   build_test_deploy:
     jobs:
       - build
-      - tests:
-          requires:
-            - build          
+      - tests
+          # requires:
+          #   - build          
 
 
 
