@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import mongoose from'mongoose';
 import config from'./config/db.config';
 import userRoutes from './app/routes/userRoutes';
+import musicRoutes from './app/routes/musicRoutes';
 const app = express();
 const servePort = config.development.port;
 app.use(morgan('combined'));
