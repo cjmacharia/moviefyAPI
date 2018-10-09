@@ -41,8 +41,21 @@ export const AuthenticationError = (res) => {
 	});
 };
 
+export const getResultsSuccess = (res, results) => {
+	res.status(200).json({
+		data: results
+	});
+};
+
 export const serverError = (res, err) => {
 	res.status(500).json({
+		error: err
+	});	
+};
+
+
+export const nothingFound = (res, err) => {
+	res.status(404).json({
 		error: err
 	});	
 };

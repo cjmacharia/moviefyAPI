@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === 'development'){
 		console.log('an error occured', err);
 	});
 }
-
+musicRoutes(app);
 userRoutes(app);
 const server = app.listen(servePort, () => {
 	console.log('server runing on port ' + servePort);
