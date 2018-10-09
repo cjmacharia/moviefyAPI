@@ -8,7 +8,8 @@ import 'babel-polyfill';
 
 class UserController { 
 	static async signUp (req, res) {
-		try { 
+		try {
+
 			const hashedPass = await util.hashPassword(req, res, req.body.password);
 			const userSignUp = new User({
 				_id: new mongoose.Types.ObjectId(),
@@ -18,31 +19,34 @@ class UserController {
 			});
 			let result = await  util.validate(userSignUp);
 			result.save((err, result) => {
-				if(err) {
-					err.name === 'ValidationError' ? responses.validationError(res, err) : responses.UserDetailsError(res, err);			
+				if (err) {
+					err.name === 'ValidationError' ? responses.validationError(res, err) : responses.UserDetailsError(res, err);
 				} else {
 					responses.creationSuccess(res, result);
 				}
 			});
+
 		}	catch(err) {
 			responses.UserDetailsError(res, err);
 		}
 	}	
 	
 	static async Userlogin (req, res) {
-		try { 
+		try {
+
 			let data = {
 				email: req.body.email,
 				password: req.body.password,
 			};
 			await util.validate(data);
 			let  user = await User.findOne({email: req.body.email});
-			if(user === null) {
+			if (user === null) {
 				responses.userNotError(res);
 			} else {
 				const match = await bcrypt.compare(data.password, user.password);
 				if (match) {
-					const token = jwt.sign({ email: user.email,
+					const token = jwt.sign({ 
+						email: user.email,
 						userId: user.id
 					}, process.env.JWT_KEY, {
 						expiresIn: '1hr'
@@ -52,6 +56,7 @@ class UserController {
 					responses.AuthenticationError(res);
 				}
 			}
+
 		} catch(err) {
 			responses.UserDetailsError(res, err);
 		}		

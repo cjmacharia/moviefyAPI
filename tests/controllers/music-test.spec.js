@@ -42,7 +42,6 @@ describe ('Test movies functionalities', () => {
 			});
 	});
 
-
 	it('returns all sound tracks available for the requested movie', (done) => {
 		const id = {
 			_id: 102697
@@ -55,7 +54,6 @@ describe ('Test movies functionalities', () => {
 				done();
 			});
 	});
-
 
 	it('return  a 404 error if the ID does not exist', (done) => {
 		const id = {
@@ -71,7 +69,6 @@ describe ('Test movies functionalities', () => {
 			});
 	});
 
-
 	it('return a list of movies found', (done) => {
 		chai.request(server)
 			.get('/browse')
@@ -81,6 +78,5 @@ describe ('Test movies functionalities', () => {
 				done();
 			});
 	});
-
 
 });

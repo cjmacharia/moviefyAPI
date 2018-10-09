@@ -13,6 +13,7 @@ chai.use(chaiHttp);
 const should = chai.should();
 	
 describe ('test user sign up functionalities', () => {
+
 	before((done) => {
 		Model.collection.drop();
 		mongoose.connect(config.test.db, { useNewUrlParser: true}).then(() => {
@@ -33,7 +34,6 @@ describe ('test user sign up functionalities', () => {
 		mongoose.connection.close();
 		process.exit();
 		done();
-
 	});
 
 	it ('should create a new user and return status code 201', (done) => {
@@ -91,8 +91,6 @@ describe ('test user sign up functionalities', () => {
 			});
 	});
 
-
-
 	it ('should fail to create a new user if the name has numbers', (done) => {
 		const user = new Model({
 			name: 'cjmash 4844',
@@ -119,7 +117,6 @@ describe ('test user sign up functionalities', () => {
 		chai.request(server)
 			.post('/signup')
 			.send(user)
-
 			.end((err, res) => {
 				res.should.have.status(403);
 				res.body.should.be.a('object');
@@ -142,7 +139,6 @@ describe ('test user sign up functionalities', () => {
 				done();			
 			});
 	});
-
 
 	it ('should fail to create a new user if the  name field is not provided', (done) => {
 		const user = new Model({
@@ -236,7 +232,6 @@ describe ('test user sign up functionalities', () => {
 			});
 	});
 
-
 	it ('should fail to login a  user if the password field is empty', (done) => {
 		const user = {
 			email: 'cjmash@email.com',
@@ -252,7 +247,5 @@ describe ('test user sign up functionalities', () => {
 				done();			
 			});
 	});
-
-
 
 });
