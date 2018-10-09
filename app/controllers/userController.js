@@ -16,14 +16,14 @@ class UserController {
 				email: req.body.email,
 				password: hashedPass
 			});
-				let result = await  util.validate(userSignUp);
-				result.save((err, result) => {
-					if(err) {
-						err.name === 'ValidationError' ? responses.validationError(res, err) : responses.UserDetailsError(res, err);			
-					} else {
-						responses.creationSuccess(res, result);
-					}
-				});
+			let result = await  util.validate(userSignUp);
+			result.save((err, result) => {
+				if(err) {
+					err.name === 'ValidationError' ? responses.validationError(res, err) : responses.UserDetailsError(res, err);			
+				} else {
+					responses.creationSuccess(res, result);
+				}
+			});
 		}	catch(err) {
 			responses.UserDetailsError(res, err);
 		}
@@ -34,27 +34,27 @@ class UserController {
 			let data = {
 				email: req.body.email,
 				password: req.body.password,
-			}
-			await util.validate(data)
+			};
+			await util.validate(data);
 			let  user = await User.findOne({email: req.body.email});
 			if(user === null) {
 				responses.userNotError(res);
 			} else {
-					const match = await bcrypt.compare(data.password, user.password);
-					if (match) {
-						const token = jwt.sign({ email: user.email,
-							userId: user.id
-						}, process.env.JWT_KEY, {
-							expiresIn: '1hr'
-						});
-						responses.loginSuccess(res, token);
-					} else {
-						responses.AuthenticationError(res);
-					}
+				const match = await bcrypt.compare(data.password, user.password);
+				if (match) {
+					const token = jwt.sign({ email: user.email,
+						userId: user.id
+					}, process.env.JWT_KEY, {
+						expiresIn: '1hr'
+					});
+					responses.loginSuccess(res, token);
+				} else {
+					responses.AuthenticationError(res);
 				}
+			}
 		} catch(err) {
-				responses.UserDetailsError(res, err);
-			}		
+			responses.UserDetailsError(res, err);
+		}		
 	}
 }
 
