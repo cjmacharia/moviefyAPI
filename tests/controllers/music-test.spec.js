@@ -2,14 +2,10 @@ process.env.NODE_ENV='test';
 
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import * as util from '../../app/utils/userUtil';
-import config from'../../config/db.config';
-import mongoose from 'mongoose';
 import server from '../../app';
 import { request } from 'https';
 chai.use(chaiHttp);
 const should = chai.should();
-const expect = chai.expect;
 
 describe ('Test movies functionalities', () => {
 	
