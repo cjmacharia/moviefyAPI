@@ -39,17 +39,18 @@ class UserController {
 				password: req.body.password,
 			};
 			await util.validate(data);
-			let  user = await User.findOne({email: req.body.email});
+			let  user = await User.findOne({
+				email: req.body.email 
+			});
 			if (user === null) {
 				responses.userNotError(res);
 			} else {
 				const match = await bcrypt.compare(data.password, user.password);
 				if (match) {
 					const token = jwt.sign({ 
-						email: user.email,
 						userId: user.id
 					}, process.env.JWT_KEY, {
-						expiresIn: '1hr'
+						expiresIn: '24000hr',
 					});
 					responses.loginSuccess(res, token);
 				} else {
@@ -61,6 +62,7 @@ class UserController {
 			responses.UserDetailsError(res, err);
 		}		
 	}
+
 }
 
 export default UserController;

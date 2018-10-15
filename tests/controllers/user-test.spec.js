@@ -10,8 +10,9 @@ import mongoose from 'mongoose';
 import server from '../../app';
 import { request } from 'https';
 chai.use(chaiHttp);
+
 const should = chai.should();
-	
+
 describe ('test user sign up functionalities', () => {
 
 	before((done) => {
@@ -35,7 +36,7 @@ describe ('test user sign up functionalities', () => {
 		process.exit();
 		done();
 	});
-
+	
 	it ('should create a new user and return status code 201', (done) => {
 		const user = new Model({
 			name: 'cjmash',
