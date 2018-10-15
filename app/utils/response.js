@@ -37,7 +37,7 @@ export const loginSuccess = (res, token) => {
 
 export const AuthenticationError = (res) => {
 	res.status(401).json({
-		error: 'Authentication failed', 
+		error: 'Authentication failed' 
 	});
 };
 
@@ -47,9 +47,15 @@ export const getResultsSuccess = (res, results) => {
 	});
 };
 
-export const serverError = (res, err) => {
+export const successfullResponse = (res) => {
+	res.status(200).json({
+		message: 'operation successfull'
+	});
+};
+
+export const serverError = (res) => {
 	res.status(500).json({
-		error: err
+		error: 'A server error occured'
 	});	
 };
 
@@ -58,4 +64,8 @@ export const nothingFound = (res, err) => {
 	res.status(404).json({
 		error: err
 	});	
+};
+
+export const NoContent = (res) => {
+	res.status(204);
 };

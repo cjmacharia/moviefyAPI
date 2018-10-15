@@ -1,6 +1,7 @@
 'use strict';
 import  mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
+
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -28,8 +29,9 @@ const userSchema = new Schema({
 	last_modified: {
 		type: Date,
 		default: Date.now,
-	},
+	}
 });
+
 userSchema.plugin(uniqueValidator);
 const User = mongoose.model('User', userSchema);
 

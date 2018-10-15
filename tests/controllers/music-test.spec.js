@@ -2,17 +2,13 @@ process.env.NODE_ENV='test';
 
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import * as util from '../../app/utils/userUtil';
-import config from'../../config/db.config';
-import mongoose from 'mongoose';
 import server from '../../app';
 import { request } from 'https';
 chai.use(chaiHttp);
 const should = chai.should();
-const expect = chai.expect;
 
 describe ('Test movies functionalities', () => {
-	
+
 	it('return a list of movies found', (done) => {
 		const movie = {
 			movie: 'fast and furious'
@@ -42,7 +38,6 @@ describe ('Test movies functionalities', () => {
 			});
 	});
 
-
 	it('returns all sound tracks available for the requested movie', (done) => {
 		const id = {
 			_id: 102697
@@ -55,7 +50,6 @@ describe ('Test movies functionalities', () => {
 				done();
 			});
 	});
-
 
 	it('return  a 404 error if the ID does not exist', (done) => {
 		const id = {
@@ -71,7 +65,6 @@ describe ('Test movies functionalities', () => {
 			});
 	});
 
-
 	it('return a list of movies found', (done) => {
 		chai.request(server)
 			.get('/browse')
@@ -81,6 +74,5 @@ describe ('Test movies functionalities', () => {
 				done();
 			});
 	});
-
 
 });
