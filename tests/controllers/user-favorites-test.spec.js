@@ -12,7 +12,7 @@ chai.use(chaiHttp);
 const should = chai.should();
 const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmJmMTZhY2U3YzdjMTc5MThhYzBhNGMiLCJpYXQiOjE1Mzk0NTY1NzcsImV4cCI6MTU0ODA5NjU3N30.AEz7_SBCsHgl2osYy8wF0IVU5-2hpr34fRmUEV9wlrk';
 
-describe ('test user sign up functionalities', () => {
+describe ('test favorites functionalities', () => {
 
 	before((done) => {
 		mongoose.connect(config.test.db, { useNewUrlParser: true}).then(() => {
