@@ -32,7 +32,7 @@ export  const favouriteTrack = async (req, res) => {
 
 		const sId = req.params.sId;
 		const trackUrl = `${apiUrl}add-favorite-song?songID=${sId}`;
-		const favoriteTrack = await fetch(trackUrl,{ 
+		const favoriteTrack = await fetch(trackUrl, { 
 			headers: myHeader
 		});
 		const foundFavoriteTrack = await favoriteTrack.json();
