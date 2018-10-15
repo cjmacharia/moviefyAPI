@@ -29,7 +29,7 @@ const userSchema = new Schema({
 	last_modified: {
 		type: Date,
 		default: Date.now,
-	},
+	}
 });
 
 userSchema.plugin(uniqueValidator);

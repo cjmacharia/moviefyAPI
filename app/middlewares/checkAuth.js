@@ -7,7 +7,7 @@ export default (req, res, next) => {
 		req.userData = decoded;
 		next();
 
-	} catch(error) {
-		responses.AuthenticationError(res);
+	} catch(err) {
+		responses.AuthenticationError(res, err);
 	} 
 };

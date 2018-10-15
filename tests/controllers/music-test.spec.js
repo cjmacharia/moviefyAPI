@@ -8,7 +8,7 @@ chai.use(chaiHttp);
 const should = chai.should();
 
 describe ('Test movies functionalities', () => {
-	
+
 	it('return a list of movies found', (done) => {
 		const movie = {
 			movie: 'fast and furious'
