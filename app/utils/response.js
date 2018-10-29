@@ -22,9 +22,9 @@ export const userNotError = (res) => {
 	});
 };
 
-export const NotFoundError = (res) => {
+export const NotFoundError = (res, err) => {
 	res.status(404).json({
-		error: 'Hey!! Not found'
+		error: err.message
 	});
 };
 
@@ -53,9 +53,9 @@ export const successfullResponse = (res) => {
 	});
 };
 
-export const serverError = (res) => {
+export const serverError = (res, err) => {
 	res.status(500).json({
-		error: 'A server error occured'
+		error: err.message
 	});	
 };
 

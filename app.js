@@ -3,6 +3,7 @@ import express from 'express';
 import bodyParser from'body-parser';
 import morgan from 'morgan';
 import mongoose from'mongoose';
+import cors from 'cors';
 import config from'./config/db.config';
 import userRoutes from './app/routes/userRoutes';
 import musicRoutes from './app/routes/musicRoutes';
@@ -10,6 +11,7 @@ import musicRoutes from './app/routes/musicRoutes';
 const serverPort = config.development.port;
 const app = express();
 
+app.use(cors());
 app.use(morgan('combined'));
 app.use(bodyParser.json());
 musicRoutes(app);
