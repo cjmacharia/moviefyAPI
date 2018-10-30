@@ -5,6 +5,9 @@
 	"main": "app.js",
 	"scripts": {
 		"test": "mocha --require babel-core/register ./tests/**/**.js",
+		"build-babel": "babel -d ./build . -s",
+		"clean": "rm -rf build && mkdir build",
+		"build": "npm run clean && npm run build-babel ",
 		"start": "nodemon --exec babel-node app.js",
 		"coverage": "babel-node ./node_modules/.bin/babel-istanbul cover _mocha -- ./tests/**/**.js --timeout 15000 --compilers js:babel-register",
 		"coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
@@ -41,6 +44,7 @@
 		"morgan": "^1.9.1",
 		"nock": "^10.0.1",
 		"node-fetch": "^2.2.0",
+		"nodemon": "^1.18.5",
 		"sinon": "^7.0.0",
 		"sinon-mongoose": "^2.2.1",
 		"validator": "^10.8.0"
@@ -51,6 +55,7 @@
 		"babel-core": "^6.26.3",
 		"babel-istanbul": "^0.12.2",
 		"babel-loader": "^8.0.4",
+		"babel-plugin-transform-runtime": "^6.23.0",
 		"babel-polyfill": "^6.26.0",
 		"babel-preset-es2015": "^6.24.1",
 		"babel-preset-stage-0": "^6.24.1",
