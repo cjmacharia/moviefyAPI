@@ -25,7 +25,7 @@ if (process.env.NODE_ENV === 'development') {
 			console.log('an error occured', err);
 		});
 } else {
-	mongoose.connect(config.development.db, { useNewUrlParser: true, })
+	mongoose.connect(config.staging.db)
 		.then(() => {
 			console.log('successfully connected to the database');
 		}).catch((err) => {
