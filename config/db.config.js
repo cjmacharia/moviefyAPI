@@ -11,7 +11,7 @@ const config =  {
 	},
 	staging: {
 		env: 'staging',
-		db:  'mongodb://localhost:27017/staging',
+		db:  'mongodb+srv://cjmash:cj@cluster0-fsvnj.mongodb.net/moviefy?retryWrites=true',
 		port: 3030
 	},
 };
