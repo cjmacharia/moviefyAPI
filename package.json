@@ -5,9 +5,10 @@
 	"main": "app.js",
 	"scripts": {
 		"test": "mocha --require babel-core/register ./tests/**/**.js",
-		"build-babel": "babel -d ./build . -s",
+		"build-babel": "babel -d ./build . -s --ignore node_modules/**/*.js",
 		"clean": "rm -rf build && mkdir build",
-		"build": "npm run clean && npm run build-babel ",
+		"heroku": "npm run build && node dist/app.js",
+		"build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package*.json,./README* --copy-files",
 		"start": "nodemon --exec babel-node app.js",
 		"coverage": "babel-node ./node_modules/.bin/babel-istanbul cover _mocha -- ./tests/**/**.js --timeout 15000 --compilers js:babel-register",
 		"coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
