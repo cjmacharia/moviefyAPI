@@ -24,9 +24,16 @@ if (process.env.NODE_ENV === 'development') {
 		}).catch((err) => {
 			console.log('an error occured', err);
 		});
+} else {
+	mongoose.connect(config.development.db, { useNewUrlParser: true, })
+		.then(() => {
+			console.log('successfully connected to the database');
+		}).catch((err) => {
+			console.log('an error occured', err);
+		});
 }
 
-const server = app.listen(serverPort, () => {
+const server = app.listen(process.env.PORT || serverPort, () => {
 	console.log('server runing on port ' + serverPort);
 });
 
