@@ -42,7 +42,7 @@ export const fetchedMovies = async(req, res) => {
 	}
 };
 
-export const getRatings = async(req, res, imdbId) => {
+export const getOmdbDetails = async(req, res, imdbId) => {
 	return new Promise(async (resolve, reject) => {
 		console.log(imdbId, 'yes');
 		if(!imdbId) {
@@ -52,7 +52,7 @@ export const getRatings = async(req, res, imdbId) => {
 		const imdbDetails = await fetch(url);
 		const fetchedDetails = await imdbDetails;
 		const foundRatings = await fetchedDetails.json();
-		return resolve(foundRatings.imdbRating);
+		return resolve(foundRatings);
 	});
 
 };
@@ -65,7 +65,8 @@ export const getTracks = async(req, res) => {
 		const fetchTracks = await fetch(soundtrackUrl);
 		const foundTracks = await fetchTracks.json();
 		const imdbId = foundTracks.data.movie.title;
-		const ratings = await getRatings(req, res, imdbId);
+		const ratings = await getOmdbDetails(req, res, imdbId);
+		console.log(ratings.imdbRating);
 		let allArtsits = [];
 		const moreDetails = await foundTracks.data;
 		let listOfFoundTracks = await foundTracks.data.albums;
@@ -80,14 +81,16 @@ export const getTracks = async(req, res) => {
 					allArtsits.push({
 						id: track._id,
 						banner: moreDetails.banner,
-						poster: moreDetails.poster,
+						poster: ratings.Poster,
 						title: moreDetails.movie.title,
-						album: track.album, 
+						album: track.album,
 						songName: track.title, 
 						spotify: track.spotify, 
 						albumId: track.spotifyAlbumId,
-						imdbratings: ratings,
-						trailer: trailer
+						imdbratings: ratings.imdbRating,
+						trailer: trailer,
+						plot: ratings.Plot,
+						Actors: ratings.Actors
 					});
 				});
 			}
@@ -97,14 +100,16 @@ export const getTracks = async(req, res) => {
 					allArtsits.push({
 						id: track._id,
 						banner: moreDetails.banner,
-						poster: moreDetails.poster,
+						poster: ratings.Poster,
 						title: moreDetails.movie.title,
 						album: track.album, 
 						songName: track.title, 
 						spotify: track.spotify, 
 						albumId: track.spotifyAlbumId,
-						imdbratings: ratings,
-						trailer: trailer
+						imdbratings: ratings.imdbRating,
+						trailer: trailer,
+						plot: ratings.Plot,
+						Actors: ratings.Actors
 					});
 				});
 			});
