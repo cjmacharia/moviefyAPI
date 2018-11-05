@@ -18,7 +18,7 @@ export const validate  = (data) => {
 		}
 
 		if (name) {
-			const re = /^([a-z]+\s)*[a-z]+$/;
+			const re = /^([A-Za-z_]+\s)*[A-Za-z_]+$/;
 			const validName = name.match(re);
 			if (!validName) {
 				return reject ('the name can not contain a number');
