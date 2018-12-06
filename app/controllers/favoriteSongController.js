@@ -8,7 +8,7 @@ const favoriteSoundTracks= [];
 const mySongs = [];
 const myHeader = {
 	'Content-Type': 'application/json',
-	'Authorization': '1yJQUEjLRGrNKOaqTMA1gXCIh3qaZSetEnnGXW0Ydz1bGpme',
+	'Authorization': '1M9jvcKw3XxxXq8fRWID0k9OfoL526ct1XBLUByDOfLGlkga',
 	'Accept-Encoding' : 'gzip, deflate'
 };
 
@@ -29,7 +29,6 @@ export const favoritesUserDetails = async () => {
 
 export  const favouriteTrack = async (req, res) => {
 	try {
-
 		const sId = req.params.sId;
 		const trackUrl = `${apiUrl}add-favorite-song?songID=${sId}`;
 		const favoriteTrack = await fetch(trackUrl, { 
