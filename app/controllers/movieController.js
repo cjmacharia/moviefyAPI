@@ -1,12 +1,11 @@
 import fetch from 'node-fetch';
-import mongoose from 'mongoose';
 import * as responses from '../utils/response';
 import Favorite from '../models/favoriteModel';
 const apiUrl = 'http://www.api.what-song.com/';
 
 const myHeader = {
 	'Content-Type': 'application/json',
-	'Authorization': '1M9jvcKw3XxxXq8fRWID0k9OfoL526ct1XBLUByDOfLGlkga',
+	'Authorization': '1yJQUEjLRGrNKOaqTMA1gXCIh3qaZSetEnnGXW0Ydz1bGpme',
 	'Accept-Encoding' : 'gzip, deflate'
 };
 
@@ -18,7 +17,6 @@ export  const  searchMovie = async (req, res) => {
 			const response = await fetch(movieUrl);
 			const result = await response.json();
 			let foundMovies = await result.data[0].data;
-
 			if (foundMovies.length === 0) {
 				return reject ('No movie found');
 			} else {
@@ -42,9 +40,8 @@ export const fetchedMovies = async(req, res) => {
 	}
 };
 
-export const getOmdbDetails = async(req, res, imdbId) => {
+export const getRatings = async(req, res, imdbId) => {
 	return new Promise(async (resolve, reject) => {
-		console.log(imdbId, 'yes');
 		if(!imdbId) {
 			return reject ('this Id must be provided');
 		}
@@ -52,7 +49,7 @@ export const getOmdbDetails = async(req, res, imdbId) => {
 		const imdbDetails = await fetch(url);
 		const fetchedDetails = await imdbDetails;
 		const foundRatings = await fetchedDetails.json();
-		return resolve(foundRatings);
+		return resolve(foundRatings.imdbRating);
 	});
 
 };
@@ -65,52 +62,23 @@ export const getTracks = async(req, res) => {
 		const fetchTracks = await fetch(soundtrackUrl);
 		const foundTracks = await fetchTracks.json();
 		const imdbId = foundTracks.data.movie.title;
-		const ratings = await getOmdbDetails(req, res, imdbId);
-		console.log(ratings.imdbRating);
+		const ratings = await getRatings(req, res, imdbId);
 		let allArtsits = [];
-		const moreDetails = await foundTracks.data;
-		let listOfFoundTracks = await foundTracks.data.albums;
-		let getTrailer = await foundTracks.data.TrailerMusic;
-		const trailer = getTrailer[0].youtube_id;
+		const listOfFoundTracks = await foundTracks.data.CompleteListOfSongs;
 		if (listOfFoundTracks.length === 0) {
-			let listOfFoundTracks = await foundTracks.data.CompleteListOfSongs;
-			if (listOfFoundTracks.length === 0) {
-				responses.NotFoundError(res);
-			} else { 
-				listOfFoundTracks.forEach((track) => {
-					allArtsits.push({
-						id: track._id,
-						banner: moreDetails.banner,
-						poster: ratings.Poster,
-						title: moreDetails.movie.title,
-						album: track.album,
-						songName: track.title, 
-						spotify: track.spotify, 
-						albumId: track.spotifyAlbumId,
-						imdbratings: ratings.imdbRating,
-						trailer: trailer,
-						plot: ratings.Plot,
-						Actors: ratings.Actors
-					});
-				});
-			}
+			responses.NotFoundError(res);
 		} else { 
-			listOfFoundTracks.forEach((tracks) => {
-				tracks.songs.forEach(track => {
-					allArtsits.push({
-						id: track._id,
-						banner: moreDetails.banner,
-						poster: ratings.Poster,
-						title: moreDetails.movie.title,
-						album: track.album, 
-						songName: track.title, 
-						spotify: track.spotify, 
-						albumId: track.spotifyAlbumId,
-						imdbratings: ratings.imdbRating,
-						trailer: trailer,
-						plot: ratings.Plot,
-						Actors: ratings.Actors
-					});
+			
+			listOfFoundTracks.forEach((track) => {
+
+				allArtsits.push({
+					id: track._id,
+					name: track.artist.name, 
+					album: track.album, 
+					song: track.title, 
+					spotify: track.spotify, 
+					albumId: track.spotifyAlbumId,
+					imdbratings: ratings
 				});
 			});
 		}
@@ -124,7 +92,7 @@ export const getTracks = async(req, res) => {
 export const browseMusic = async (req, res) => {
 	try {
 
-		const browseUrl = `${apiUrl}recent-movies/?limit=20`;
+		const browseUrl = `${apiUrl}recent-movies/?limit=5`;
 		const recentMovies = await fetch(browseUrl);
 		const foundMovies = await recentMovies.json();
 		const latestMovies = [];
@@ -148,12 +116,14 @@ export const browseMusic = async (req, res) => {
 
 export  const favouriteTrack = async (req, res) => {
 	try {
+
 		const sId = req.params.sId;
 		const trackUrl = `${apiUrl}add-favorite-song?songID=${sId}`;
 		const favoriteTrack = await fetch(trackUrl,{ 
 			headers: myHeader
 		});
 		const foundFavoriteTrack = await favoriteTrack.json();
+		console.log(foundFavoriteTrack);
 		const data = new Favorite({
 			_id: new mongoose.Types.ObjectId(),
 			songid: foundFavoriteTrack.data.song,
@@ -169,6 +139,6 @@ export  const favouriteTrack = async (req, res) => {
 		});
 
 	} catch(err) {
-		responses.serverError(res, err);
+		responses.serverError(res);
 	}
 };
