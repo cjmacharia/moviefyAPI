@@ -3,7 +3,6 @@ import express from 'express';
 import bodyParser from'body-parser';
 import morgan from 'morgan';
 import mongoose from'mongoose';
-import cors from 'cors';
 import config from'./config/db.config';
 import userRoutes from './app/routes/userRoutes';
 import musicRoutes from './app/routes/musicRoutes';
@@ -11,7 +10,6 @@ import musicRoutes from './app/routes/musicRoutes';
 const serverPort = config.development.port;
 const app = express();
 
-app.use(cors());
 app.use(morgan('combined'));
 app.use(bodyParser.json());
 musicRoutes(app);
@@ -24,16 +22,9 @@ if (process.env.NODE_ENV === 'development') {
 		}).catch((err) => {
 			console.log('an error occured', err);
 		});
-} else {
-	mongoose.connect(config.staging.db)
-		.then(() => {
-			console.log('successfully connected to the database');
-		}).catch((err) => {
-			console.log('an error occured', err);
-		});
 }
 
-const server = app.listen(process.env.PORT || serverPort, () => {
+const server = app.listen(serverPort, () => {
 	console.log('server runing on port ' + serverPort);
 });
 
